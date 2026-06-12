@@ -1,21 +1,22 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, get, set, update, runTransaction, increment } from "firebase/database";
 
+// 1. Updated Database Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAKgVkFmFSQPza_RxYtUsTuHkQAtjTZGuo",
-  authDomain: "ng-solutions-646d2.firebaseapp.com",
-  databaseURL: "https://ng-solutions-646d2-default-rtdb.firebaseio.com",
-  projectId: "ng-solutions-646d2",
-  storageBucket: "ng-solutions-646d2.firebasestorage.app",
-  messagingSenderId: "784270312498",
-  appId: "1:784270312498:web:833d6031cff506bd3c282b"
+  apiKey: "AIzaSyANPpqVb76h_fAgcSNs4btyV1pgRicFKWw",
+  authDomain: "ng-solutions-1c68b.firebaseapp.com",
+  databaseURL: "https://ng-solutions-1c68b-default-rtdb.firebaseio.com",
+  projectId: "ng-solutions-1c68b",
+  storageBucket: "ng-solutions-1c68b.firebasestorage.app",
+  messagingSenderId: "256064070983",
+  appId: "1:256064070983:web:2b3a4abff5d413cae31862"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Global Bot Token for verification
-const BOT_TOKEN = "7980852115:AAF_Tf6WL-mGm_IMkt4QP3Yu8LKZoc6JSUg";
+// 2. Updated Bot Token
+const BOT_TOKEN = "8949928597:AAE_tqWVa6dzmEQOg2QCrkYPUguSPNjiZiE";
 
 function getExactDate() {
     return new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
@@ -131,10 +132,8 @@ export default async function handler(req, res) {
             const updates = {};
             if(data.theme !== undefined) updates[`users/${data.phone}/theme`] = data.theme;
             if(data.tag !== undefined) updates[`users/${data.phone}/tag`] = data.tag;
-            if(data.advancedUI !== undefined) updates[`users/${data.phone}/advancedUI`] = data.advancedUI;
             if(data.accentColor !== undefined) updates[`users/${data.phone}/accentColor`] = data.accentColor;
             if(data.customUserTag !== undefined) updates[`users/${data.phone}/customUserTag`] = data.customUserTag;
-            if(data.colorfulMode !== undefined) updates[`users/${data.phone}/colorfulMode`] = data.colorfulMode;
             await update(ref(db), updates);
             return res.json({ data: "Success" });
         }
@@ -178,14 +177,14 @@ export default async function handler(req, res) {
                 if(tSnap.exists()) {
                     tSnap.forEach(c => {
                         let t = c.val();
-                        if(t.senderId === data.phone || t.receiverId === data.phone) txns.push(t);
+                        if(t && (t.senderId === data.phone || t.receiverId === data.phone)) txns.push(t);
                     });
                 }
                 txns.sort((a, b) => b.timestamp - a.timestamp);
                 let postsArr = []; if (pSnap.exists()) pSnap.forEach(p => { postsArr.push(p.val()); });
                 return res.json({ data: { user: userData, settings: cSnap.val() || {}, txns: txns, posts: postsArr }});
             } catch (syncErr) {
-                return res.json({ error: "invalid" });
+                return res.json({ error: "invalid sync" });
             }
         }
 
@@ -197,19 +196,19 @@ export default async function handler(req, res) {
             let sKeeper = Number(uSnap.val().keeperBalance) || 0;
             
             if (['SEND', 'GHOST_SEND', 'WITHDRAW', 'KEEPER_LOCK'].includes(data.mode)) { if (sBal < amt) throw new Error("Insufficient Balance!"); }
-            if (data.mode === 'KEEPER_WITHDRAW') { if (sKeeper < amt) throw new Error("Insufficient Keeper Balance!"); }
+            if (data.mode === 'KEEPER_WITHDRAW') { if (sKeeper < amt) throw new Error("Insufficient Vault Balance!"); }
 
             const updates = {};
             if (data.mode === 'SEND' || data.mode === 'GHOST_SEND') {
                 const rSnap = await get(ref(db, `users/${data.receiver}`));
                 if (!rSnap.exists()) throw new Error("Receiver not found!");
-                updates[`users/${data.sender}/balance`] = sBal - amt; 
-                updates[`users/${data.receiver}/balance`] = Number(rSnap.val().balance) + amt;
+                updates[`users/${data.sender}/balance`] = increment(-amt); 
+                updates[`users/${data.receiver}/balance`] = increment(amt);
             }
-            else if (data.mode === 'WITHDRAW') updates[`users/${data.sender}/balance`] = sBal - amt;
-            else if (data.mode === 'KEEPER_LOCK') { updates[`users/${data.sender}/balance`] = sBal - amt; updates[`users/${data.sender}/keeperBalance`] = sKeeper + amt; } 
-            else if (data.mode === 'KEEPER_WITHDRAW') { updates[`users/${data.sender}/keeperBalance`] = sKeeper - amt; updates[`users/${data.sender}/balance`] = sBal + amt; } 
-            else if (data.mode === 'DEPOSIT') updates[`users/${data.sender}/balance`] = sBal + amt;
+            else if (data.mode === 'WITHDRAW') updates[`users/${data.sender}/balance`] = increment(-amt);
+            else if (data.mode === 'KEEPER_LOCK') { updates[`users/${data.sender}/balance`] = increment(-amt); updates[`users/${data.sender}/keeperBalance`] = increment(amt); } 
+            else if (data.mode === 'KEEPER_WITHDRAW') { updates[`users/${data.sender}/keeperBalance`] = increment(-amt); updates[`users/${data.sender}/balance`] = increment(amt); } 
+            else if (data.mode === 'DEPOSIT') updates[`users/${data.sender}/balance`] = increment(amt);
             
             if(data.txn) {
                 data.txn.date = getExactDate();
@@ -224,13 +223,11 @@ export default async function handler(req, res) {
             const uSnap = await get(ref(db, `users/${data.sender}`));
             if (!uSnap.exists() || Number(uSnap.val().balance) < total) throw new Error("Insufficient Balance!");
             
-            const updates = { [`users/${data.sender}/balance`]: Number(uSnap.val().balance) - total };
+            const updates = { [`users/${data.sender}/balance`]: increment(-total) };
             for(let num of data.receivers) {
-                const rSnap = await get(ref(db, `users/${num}`));
-                let rBal = rSnap.exists() ? Number(rSnap.val().balance) : 0;
-                updates[`users/${num}/balance`] = rBal + Number(data.amount);
+                updates[`users/${num}/balance`] = increment(Number(data.amount));
                 let tId = 'TXN' + Date.now().toString(36).toUpperCase();
-                updates[`transactions/${tId}`] = { id: tId, type: 'out', title: 'Bulk Send', amount: data.amount, status: 'Success', date: getExactDate(), timestamp: Date.now(), icon: 'fa-users', color: 'purple', senderId: data.sender, receiverId: num };
+                updates[`transactions/${tId}`] = { id: tId, type: 'out', title: 'Bulk Send', amount: data.amount, status: 'Success', date: getExactDate(), timestamp: Date.now(), icon: 'fa-users', color: 'blue', senderId: data.sender, receiverId: num };
             }
             await update(ref(db), updates);
             return res.json({ data: "Success" });
@@ -268,7 +265,7 @@ export default async function handler(req, res) {
             data.txn.date = getExactDate();
 
             await update(ref(db), { 
-                [`users/${data.phone}/balance`]: Number(uSnap.val().balance) - totalDeduction, 
+                [`users/${data.phone}/balance`]: increment(-totalDeduction), 
                 [`lifafas/${lifId}`]: lifafaData, 
                 [`transactions/${data.txn.id}`]: data.txn 
             });
@@ -354,11 +351,9 @@ export default async function handler(req, res) {
             } else {
                 reward = Number(lifafaData.amountPerUser);
             }
-
-            const uSnap = await get(ref(db, `users/${data.phone}`));
             
             const updates = {};
-            updates[`users/${data.phone}/balance`] = Number(uSnap.val().balance) + reward; 
+            updates[`users/${data.phone}/balance`] = increment(reward); 
             data.txn.date = getExactDate();
             data.txn.amount = reward;
             updates[`transactions/${data.txn.id}`] = data.txn;
@@ -369,7 +364,7 @@ export default async function handler(req, res) {
                 if (refSnap.exists()) {
                     let referReward = Number(lifafaData.referAmount) || 0;
                     if (referReward > 0) {
-                        updates[`users/${data.referrerPhone}/balance`] = Number(refSnap.val().balance) + referReward;
+                        updates[`users/${data.referrerPhone}/balance`] = increment(referReward);
                         let refTxnId = 'TXN' + Date.now().toString(36).toUpperCase();
                         updates[`transactions/${refTxnId}`] = {
                             id: refTxnId, type: 'in', title: 'Lifafa Referral Reward', amount: referReward,
@@ -381,7 +376,6 @@ export default async function handler(req, res) {
             }
 
             await update(ref(db), updates); 
-            
             return res.json({ data: { amount: reward, type: lifafaData.type, referActive: lifafaData.referActive } });
         }
 
@@ -394,7 +388,7 @@ export default async function handler(req, res) {
             const snap = await get(ref(db, `users/${data.phone}`));
             if (!snap.exists() || Number(snap.val().balance) < total) throw new Error("Insufficient Balance!");
             data.txn.date = getExactDate();
-            const updates = { [`users/${data.phone}/balance`]: Number(snap.val().balance) - total, [`giftcodes/${data.code}`]: { amountPerUser: amt, remainingUsers: data.users, totalUsers: data.users, createdBy: data.phone }, [`transactions/${data.txn.id}`]: data.txn };
+            const updates = { [`users/${data.phone}/balance`]: increment(-total), [`giftcodes/${data.code}`]: { amountPerUser: amt, remainingUsers: data.users, totalUsers: data.users, createdBy: data.phone }, [`transactions/${data.txn.id}`]: data.txn };
             await update(ref(db), updates); return res.json({ data: "Success" });
         }
 
@@ -407,11 +401,10 @@ export default async function handler(req, res) {
             if (!result.committed) throw new Error("Code invalid, expired, or already claimed.");
             
             resultAmount = Number(result.snapshot.val().amountPerUser);
-            const uSnap = await get(ref(db, `users/${data.phone}`));
             
             data.txn.date = getExactDate();
             data.txn.amount = resultAmount;
-            const updates = { [`users/${data.phone}/balance`]: Number(uSnap.val().balance) + resultAmount, [`transactions/${data.txn.id}`]: data.txn };
+            const updates = { [`users/${data.phone}/balance`]: increment(resultAmount), [`transactions/${data.txn.id}`]: data.txn };
             if (result.snapshot.val().remainingUsers <= 0) updates[`giftcodes/${data.code}`] = null; 
             await update(ref(db), updates); return res.json({ data: resultAmount });
         }
