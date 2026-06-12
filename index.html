@@ -18,6 +18,7 @@
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-blue-500 selection:text-white">
 
+    <!-- Splash Screen -->
     <div id="splash-screen" class="fixed inset-0 bg-blue-600 z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="w-24 h-24 bg-white rounded-3xl shadow-2xl flex items-center justify-center text-blue-600 text-5xl mb-6 animate-bounce">
             <i class="fas fa-wallet"></i>
@@ -26,6 +27,7 @@
         <p class="text-blue-200 text-sm font-bold tracking-widest uppercase">Secure Wallet</p>
     </div>
 
+    <!-- Maintenance Overlay -->
     <div id="maintenance-wrapper" class="fixed inset-0 bg-white z-50 hidden flex-col items-center justify-center p-6 text-center">
         <i class="fas fa-tools text-6xl text-blue-500 mb-6 animate-pulse"></i>
         <h2 class="text-2xl font-black text-gray-800 mb-2 tracking-wide">System Update</h2>
@@ -33,6 +35,7 @@
         <button id="help-support-link" class="px-8 py-4 bg-blue-500 text-white rounded-xl font-bold tracking-wide shadow-lg shadow-blue-500/30">Contact Support</button>
     </div>
 
+    <!-- Banned Overlay -->
     <div id="banned-wrapper" class="fixed inset-0 bg-white z-50 hidden flex-col items-center justify-center p-6 text-center">
         <i class="fas fa-ban text-6xl text-red-500 mb-6"></i>
         <h2 class="text-2xl font-black text-gray-800 mb-2 tracking-wide">Account Suspended</h2>
@@ -40,8 +43,9 @@
         <button onclick="logoutUser()" class="px-8 py-4 bg-gray-100 text-gray-600 rounded-xl font-bold tracking-wide">Logout</button>
     </div>
 
+    <!-- Auth System -->
     <div id="auth-wrapper" class="fixed inset-0 bg-white z-40 hidden flex items-center justify-center p-6 pb-20 overflow-y-auto no-scrollbar">
-        <div class="w-full max-w-sm">
+        <div class="w-full max-w-sm mt-10">
             <div class="text-center mb-10">
                 <div class="w-20 h-20 bg-blue-600 rounded-3xl shadow-xl flex items-center justify-center text-white text-4xl mx-auto mb-6">
                     <i class="fas fa-wallet"></i>
@@ -50,6 +54,7 @@
                 <p class="text-gray-400 font-bold text-sm tracking-widest uppercase">Sign In to Continue</p>
             </div>
 
+            <!-- Login View -->
             <div id="auth-login" class="theme-card p-6 rounded-3xl shadow-sm border border-gray-100">
                 <input type="number" id="login-phone" placeholder="Phone Number" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent font-mono">
                 <input type="password" id="login-pass" placeholder="Password" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-6 focus-accent font-mono">
@@ -60,6 +65,7 @@
                 </div>
             </div>
 
+            <!-- Signup View -->
             <div id="auth-signup" class="theme-card p-6 rounded-3xl shadow-sm border border-gray-100 hidden">
                 <h2 class="text-lg font-black mb-6 text-center text-gray-800">New Account</h2>
                 <input type="text" id="reg-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent">
@@ -67,14 +73,20 @@
                 <input type="email" id="reg-email" placeholder="Email Address (Required)" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent font-mono">
                 <input type="password" id="reg-pass" placeholder="Create Password" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent font-mono">
                 <input type="password" id="reg-pin" placeholder="Create 4-Digit Security PIN" maxlength="4" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent font-mono">
-                <input type="number" id="reg-telegram" placeholder="Telegram User ID (Numeric)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-6 focus-accent font-mono">
-                <p class="text-[10px] text-gray-400 text-center mb-4 italic">Get Telegram ID from @userinfobot</p>
+                
+                <div class="flex items-center gap-2 mb-2">
+                    <input type="number" id="reg-telegram" placeholder="Telegram User ID" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus-accent font-mono">
+                    <a href="https://t.me/NG_WALLET_BOT" target="_blank" class="bg-blue-100 text-blue-600 px-4 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap border border-blue-200 hover:bg-blue-200 transition-colors">Get UserID</a>
+                </div>
+                <a href="https://t.me/NG_WALLET_BOT" target="_blank" class="block text-[10px] text-blue-500 hover:text-blue-600 text-center mb-6 font-bold uppercase tracking-wider"><i class="fab fa-telegram"></i> Click to Start @NG_WALLET_BOT</a>
+
                 <button id="btn-signup-otp" onclick="processSignupStep1()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">SEND OTP TO TELEGRAM</button>
                 <div class="text-center mt-6">
                     <button onclick="showAuthView('login')" class="text-xs font-bold text-gray-400 hover:text-blue-500 tracking-wide">Back to Login</button>
                 </div>
             </div>
 
+            <!-- Reset Password/PIN View -->
             <div id="auth-reset-pin" class="theme-card p-6 rounded-3xl shadow-sm border border-gray-100 hidden">
                 <h2 class="text-lg font-black mb-6 text-center text-gray-800">Reset Security</h2>
                 <div id="form-reset-1">
@@ -91,6 +103,7 @@
                 </div>
             </div>
 
+            <!-- OTP Verification View -->
             <div id="auth-otp" class="theme-card p-6 rounded-3xl shadow-sm border border-gray-100 hidden">
                 <h2 class="text-lg font-black mb-2 text-center text-gray-800">Enter OTP</h2>
                 <p class="text-xs text-gray-400 text-center mb-6 font-medium">Sent to your linked Telegram account</p>
@@ -103,10 +116,13 @@
         </div>
     </div>
 
+    <!-- MAIN APP STRUCTURE -->
     <div class="w-full max-w-md mx-auto relative min-h-screen bg-transparent pb-20 flex flex-col shadow-2xl overflow-hidden">
         
+        <!-- Sidebar Overlay -->
         <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/40 z-40 hidden opacity-0 transition-opacity duration-300" onclick="toggleSidebar()"></div>
 
+        <!-- Sidebar -->
         <div id="sidebar" class="fixed top-0 left-0 h-full w-[280px] bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl border-r border-gray-100">
             <div class="p-6 bg-blue-50 border-b border-blue-100">
                 <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-2xl font-black mb-4 shadow-lg shadow-blue-500/30" id="ui-user-initial">U</div>
@@ -128,6 +144,7 @@
             </div>
         </div>
 
+        <!-- Top Navigation Bar -->
         <div class="px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="text-xl text-gray-800 hover:text-blue-600 transition-colors"><i class="fas fa-bars"></i></button>
@@ -144,10 +161,13 @@
             </div>
         </div>
 
+        <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto overflow-x-hidden p-6 pb-32 no-scrollbar relative">
             
+            <!-- ====== HOME VIEW ====== -->
             <div id="view-home" class="view-section active">
                 
+                <!-- Welcome Text -->
                 <div class="mb-5 flex justify-between items-center" onclick="handleSecretDeleteHistoryTap()">
                     <div>
                         <h2 class="text-2xl font-black text-gray-800 tracking-tight">Hi, <span id="ui-user-name" class="text-blue-600">User</span> 👋</h2>
@@ -155,6 +175,7 @@
                     </div>
                 </div>
 
+                <!-- Main Balance Card -->
                 <div id="home-main-card" class="rounded-3xl p-6 mb-4 relative overflow-hidden transition-all">
                     <p class="text-sm font-medium mb-1 opacity-90">Total Balance</p>
                     <h2 class="text-4xl font-black tracking-tight mb-4">₹<span class="global-balance">0.00</span></h2>
@@ -170,10 +191,12 @@
                         </div>
                     </div>
 
+                    <!-- Decorative Background elements -->
                     <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
                     <div class="absolute right-12 -top-12 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
                 </div>
 
+                <!-- 2x2 Stats Grid directly below the balance card -->
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <div class="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm flex flex-col items-center justify-center">
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1 text-center">Total Credit</p>
@@ -193,6 +216,7 @@
                     </div>
                 </div>
 
+                <!-- Features Row -->
                 <div id="grid-container-actions" class="grid grid-cols-4 gap-4 mb-8">
                     <button class="flex flex-col items-center gap-2 btn-animate focus:outline-none" onclick="document.getElementById('actionModalSend').classList.remove('hidden'); setTimeout(()=>document.getElementById('actionModalSend').classList.remove('opacity-0'),10);">
                         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center text-xl transition-colors shadow-sm"><i class="fas fa-paper-plane"></i></div>
@@ -202,7 +226,7 @@
                         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center text-xl transition-colors shadow-sm"><i class="fas fa-plus"></i></div>
                         <span class="text-[10px] font-bold text-gray-600 tracking-wide">Add</span>
                     </button>
-                    <button class="flex flex-col items-center gap-2 btn-animate focus:outline-none" onclick="document.getElementById('actionModalReceive').classList.remove('hidden'); setTimeout(()=>document.getElementById('actionModalReceive').classList.remove('opacity-0'),10);">
+                    <button class="flex flex-col items-center gap-2 btn-animate focus:outline-none" onclick="openReceiveModal()">
                         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center text-xl transition-colors shadow-sm"><i class="fas fa-arrow-down"></i></div>
                         <span class="text-[10px] font-bold text-gray-600 tracking-wide">Receive</span>
                     </button>
@@ -210,6 +234,7 @@
                         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center text-xl transition-colors shadow-sm"><i class="fas fa-users"></i></div>
                         <span class="text-[10px] font-bold text-gray-600 tracking-wide">Bulk</span>
                     </button>
+                    <!-- Row 2 -->
                     <button class="flex flex-col items-center gap-2 btn-animate focus:outline-none" onclick="showView('lifafa')">
                         <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center text-xl transition-colors shadow-sm"><i class="fas fa-envelope-open-text"></i></div>
                         <span class="text-[10px] font-bold text-gray-600 tracking-wide">Lifafa</span>
@@ -228,16 +253,19 @@
                     </button>
                 </div>
 
+                <!-- Recent Transactions Header -->
                 <div class="flex justify-between items-end mb-4">
                     <h3 class="text-lg font-black text-gray-800">Transactions</h3>
                     <button onclick="showView('game')" class="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 uppercase tracking-widest transition-colors shadow-sm border border-blue-100">View All</button>
                 </div>
 
+                <!-- Transaction List Container -->
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden" id="home-txn-list">
                     <div class="p-6 skeleton-shimmer"><div class="h-10 w-full rounded-xl"></div></div>
                 </div>
             </div>
 
+            <!-- ====== WALLET STATS VIEW (VIEW ALL) ====== -->
             <div id="view-game" class="view-section">
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="showView('home')" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-800 flex items-center justify-center shadow-sm"><i class="fas fa-arrow-left"></i></button>
@@ -269,9 +297,11 @@
                 </div>
 
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden" id="stats-txn-list">
-                    </div>
+                    <!-- Txns loaded here via JS -->
+                </div>
             </div>
 
+            <!-- ====== MY PROFILE VIEW ====== -->
             <div id="view-myprofile" class="view-section">
                 <div class="flex items-center justify-between mb-8">
                     <div class="flex items-center gap-3">
@@ -338,6 +368,7 @@
                 </div>
             </div>
 
+            <!-- ====== API SYSTEM VIEW ====== -->
             <div id="view-api" class="view-section">
                 <div class="flex items-center gap-3 mb-8">
                     <button onclick="showView('home')" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-800 flex items-center justify-center shadow-sm"><i class="fas fa-arrow-left"></i></button>
@@ -350,8 +381,9 @@
                     </div>
                     <div class="api-content">
                         <div class="relative mb-4">
+                            <!-- Input Field showing proper API Key -->
                             <input type="text" id="ui-api-key-display" readonly value="Loading..." class="w-full bg-gray-50 border border-gray-200 text-blue-600 font-mono font-black text-lg px-4 py-4 rounded-xl text-center focus-accent tracking-wider shadow-inner">
-                            <button onclick="copyText(document.getElementById('ui-api-key-display').value)" class="absolute right-2 top-2 bottom-2 w-12 bg-white text-gray-400 hover:text-blue-500 border border-gray-200 rounded-lg shadow-sm"><i class="fas fa-copy"></i></button>
+                            <button onclick="copyText(document.getElementById('ui-api-key-display').value)" class="absolute right-2 top-2 bottom-2 w-12 bg-white text-gray-400 hover:text-blue-500 border border-gray-200 rounded-lg shadow-sm transition-colors flex items-center justify-center"><i class="fas fa-copy"></i></button>
                         </div>
                         <button onclick="regenerateApiKey()" class="w-full border border-blue-200 text-blue-600 bg-blue-50 py-3 rounded-xl font-bold tracking-wide transition-colors hover:bg-blue-100"><i class="fas fa-sync-alt mr-2"></i> REGENERATE KEY</button>
                     </div>
@@ -381,6 +413,7 @@
                 </div>
             </div>
 
+            <!-- ====== LIFAFA VIEW ====== -->
             <div id="view-lifafa" class="view-section">
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="showView('home')" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-800 flex items-center justify-center shadow-sm"><i class="fas fa-arrow-left"></i></button>
@@ -424,6 +457,7 @@
                             <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Total Users Limit</label>
                             <input type="number" id="lif-users" placeholder="e.g. 50" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-bold mb-6 focus-accent font-mono">
 
+                            <!-- Telegram Force Join -->
                             <div class="mb-6 border border-gray-200 rounded-2xl p-4 bg-gray-50">
                                 <label class="block text-xs font-black text-gray-600 uppercase tracking-widest mb-1"><i class="fab fa-telegram text-blue-500"></i> Force Channel Join (Optional)</label>
                                 <p class="text-[9px] text-gray-400 font-bold mb-3">Users must join these channels to claim. Make sure BOT is admin.</p>
@@ -461,15 +495,18 @@
                 </div>
             </div>
 
+            <!-- ====== OFFICIAL POSTS VIEW ====== -->
             <div id="view-official" class="view-section">
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="showView('home')" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-800 flex items-center justify-center shadow-sm"><i class="fas fa-arrow-left"></i></button>
                     <h2 class="text-2xl font-black text-gray-800">Announcements</h2>
                 </div>
                 <div id="official-posts-container" class="space-y-4 pb-20 flex flex-col justify-end min-h-[60vh]">
-                    </div>
+                    <!-- Admin posts injected here -->
+                </div>
             </div>
 
+            <!-- ====== BOT ALERT SETTINGS VIEW ====== -->
             <div id="view-botalert" class="view-section">
                 <div class="flex items-center gap-3 mb-6">
                     <button onclick="showView('myprofile')" class="w-10 h-10 rounded-full bg-white border border-gray-200 text-gray-800 flex items-center justify-center shadow-sm"><i class="fas fa-arrow-left"></i></button>
@@ -477,7 +514,7 @@
                 </div>
 
                 <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-50">
+                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
                         <div>
                             <p class="font-black text-gray-800">Enable Notifications</p>
                             <p class="text-[10px] font-bold text-gray-400 mt-1">Receive transaction alerts on Telegram</p>
@@ -491,7 +528,7 @@
                     <div class="mb-8">
                         <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Telegram User ID (Numeric)</label>
                         <input type="number" id="bot-alert-tg-id-fs" placeholder="e.g., 123456789" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus-accent font-mono shadow-sm">
-                        <p class="text-[10px] font-bold text-gray-400 mt-2"><i class="fas fa-info-circle text-blue-500 mr-1"></i> Send /id to @userinfobot to get your numeric ID.</p>
+                        <p class="text-[10px] font-bold text-gray-400 mt-2"><i class="fas fa-info-circle text-blue-500 mr-1"></i> Send /id to @NG_WALLET_BOT to get your numeric ID.</p>
                     </div>
 
                     <button onclick="saveBotAlertSettingsFS()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">SAVE SETTINGS</button>
@@ -500,6 +537,7 @@
 
         </div>
 
+        <!-- Bottom Navigation -->
         <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-100 flex justify-around items-center px-2 py-3 z-30 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
             <button onclick="showView('home')" class="nav-item flex flex-col items-center gap-1 w-16 p-1 rounded-xl text-blue-600 transition-colors">
                 <i class="fas fa-home text-xl mb-0.5"></i>
@@ -528,6 +566,9 @@
         </div>
     </div>
 
+    <!-- Modals System -->
+    
+    <!-- Action Modal: SEND -->
     <div id="actionModalSend" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center">
         <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] border-t border-gray-100">
             <div class="flex justify-between items-center mb-6">
@@ -548,6 +589,7 @@
         </div>
     </div>
 
+    <!-- Action Modal: ADD (Deposit) - WITH FIX FOR QR IMAGE -->
     <div id="actionModalAdd" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center">
         <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] border-t border-gray-100 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
@@ -557,7 +599,7 @@
             
             <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-center mb-6">
                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Scan & Pay to Deposit</p>
-                <img src="IMG_20260612_143712.jpg" class="w-48 h-48 mx-auto rounded-xl shadow-sm border border-gray-200 p-1 bg-white mb-3 object-contain">
+                <img id="deposit-qr-img" src="" class="w-48 h-48 mx-auto rounded-xl shadow-sm border border-gray-200 p-1 bg-white mb-3 object-contain">
                 <p class="text-sm font-bold text-gray-600">UPI ID: <span id="ui-upi-id" class="text-blue-600 font-mono font-black select-all">Loading...</span></p>
             </div>
 
@@ -575,6 +617,9 @@
                 </button>
                 <div id="screenshot-preview-container" class="hidden mb-4 relative rounded-xl overflow-hidden border border-gray-200 shadow-sm h-32 bg-gray-50">
                     <img id="screenshot-preview-img" src="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+                        <span class="text-[10px] font-black text-white uppercase tracking-widest"><i class="fas fa-check-circle text-green-400 mr-1"></i> Attached</span>
+                    </div>
                 </div>
 
                 <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">SUBMIT REQUEST</button>
@@ -582,6 +627,7 @@
         </div>
     </div>
 
+    <!-- Action Modal: RECEIVE (Fix for QR Code display) -->
     <div id="actionModalReceive" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-6">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 transform transition-transform duration-300 scale-95 shadow-2xl border border-gray-100 text-center relative">
             <button onclick="document.getElementById('actionModalReceive').classList.add('opacity-0'); setTimeout(()=>document.getElementById('actionModalReceive').classList.add('hidden'),300);" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
@@ -589,17 +635,17 @@
             <p class="text-xs font-bold text-gray-400 mb-6 uppercase tracking-widest">Show this QR to sender</p>
             
             <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 inline-block mb-6 shadow-inner">
-                <img id="receive-qr-img" src="" class="w-48 h-48 bg-white p-2 rounded-xl border border-gray-100 shadow-sm mx-auto" onload="this.src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=NGSOLUTION:${currentUser?.phone}:${encodeURIComponent(currentUser?.name)}`">
+                <img id="receive-qr-img" src="" class="w-48 h-48 bg-white p-2 rounded-xl border border-gray-100 shadow-sm mx-auto">
             </div>
 
             <div class="bg-blue-50 border border-blue-100 p-4 rounded-2xl">
                 <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Your Registered Number</p>
                 <p class="text-lg font-black text-blue-600 font-mono tracking-widest" id="receive-num-display">Loading...</p>
-                <script>setInterval(() => { if(currentUser && document.getElementById('receive-num-display')) document.getElementById('receive-num-display').innerText = currentUser.phone; }, 1000);</script>
             </div>
         </div>
     </div>
 
+    <!-- Action Modal: SCAN -->
     <div id="actionModalScan" class="fixed inset-0 bg-slate-900/90 z-50 hidden opacity-0 transition-opacity duration-300 flex flex-col items-center justify-start pt-10">
         <div class="w-full max-w-md px-6 mb-4 flex justify-between items-center text-white">
             <h3 class="text-xl font-black tracking-wide">Scan QR Code</h3>
@@ -610,11 +656,14 @@
             <div class="relative w-full aspect-square rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl bg-black">
                 <div id="reader" class="w-full h-full"></div>
                 <div class="absolute w-full h-[2px] bg-blue-500 z-10 animate-scanline shadow-[0_0_15px_3px_rgba(37,99,235,0.6)]"></div>
+                <div class="absolute inset-0 pointer-events-none border-[3px] border-dashed border-white/30 rounded-3xl m-6"></div>
             </div>
             
             <div class="flex justify-center gap-6 mt-8">
                 <button onclick="document.getElementById('qr-upload').click()" class="w-14 h-14 rounded-full bg-white/10 text-white flex items-center justify-center text-xl hover:bg-white/20 backdrop-blur-md transition-colors"><i class="fas fa-image"></i></button>
                 <input type="file" id="qr-upload" accept="image/*" class="hidden" onchange="handleQRUpload(event)">
+                <button onclick="toggleQRTorch()" id="btn-qr-torch" class="w-14 h-14 rounded-full bg-white/10 text-white flex items-center justify-center text-xl hover:bg-white/20 backdrop-blur-md transition-colors"><i class="fas fa-bolt"></i></button>
+                <button onclick="toggleQRZoom()" class="w-14 h-14 rounded-full bg-white/10 text-white flex items-center justify-center text-sm font-black hover:bg-white/20 backdrop-blur-md transition-colors" id="btn-qr-zoom">1x</button>
             </div>
         </div>
 
@@ -629,14 +678,16 @@
                 <span class="absolute left-4 top-3 text-gray-400 font-black">₹</span>
                 <input type="number" id="scan-amt" placeholder="0.00" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-4 py-3 text-lg font-black focus-accent font-mono text-blue-600">
             </div>
+            <input type="text" id="scan-comment" placeholder="Add a note (Optional)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 focus-accent">
             <input type="password" id="scan-pin" placeholder="Enter 4-Digit PIN" maxlength="4" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center text-xl tracking-widest font-black mb-6 focus-accent text-gray-800 font-mono">
             <button onclick="processScanPay()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">PAY SECURELY</button>
             <button onclick="resetScanner()" class="w-full mt-3 py-3 text-xs font-bold text-gray-400 hover:text-gray-600 uppercase tracking-widest transition-colors">Cancel & Rescan</button>
         </div>
     </div>
 
+    <!-- Action Modal: BULK PAY -->
     <div id="actionModalBulk" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center">
-        <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-2xl border-t border-gray-100 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] border-t border-gray-100 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-black text-gray-800 flex items-center gap-2"><i class="fas fa-users text-blue-600"></i> Bulk Transfer</h3>
                 <button onclick="document.getElementById('actionModalBulk').classList.add('opacity-0'); setTimeout(()=>document.getElementById('actionModalBulk').classList.add('hidden'),300);" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
@@ -652,8 +703,9 @@
         </div>
     </div>
 
+    <!-- Action Modal: GIFT CODES -->
     <div id="actionModalGift" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center">
-        <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-2xl border-t border-gray-100">
+        <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] border-t border-gray-100">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-black text-gray-800 flex items-center gap-2"><i class="fas fa-gift text-blue-600"></i> Gift Codes</h3>
                 <button onclick="document.getElementById('actionModalGift').classList.add('opacity-0'); setTimeout(()=>document.getElementById('actionModalGift').classList.add('hidden'),300);" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
@@ -675,17 +727,48 @@
         </div>
     </div>
 
+    <!-- Action Modal: KEEPER (Vault Restored) -->
     <div id="actionModalKeeper" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center">
         <div class="bg-white w-full max-w-md rounded-t-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-2xl border-t border-gray-100">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-black text-gray-800 flex items-center gap-2"><i class="fas fa-lock text-blue-600"></i> Secure Vault</h3>
                 <button onclick="document.getElementById('actionModalKeeper').classList.add('opacity-0'); setTimeout(()=>document.getElementById('actionModalKeeper').classList.add('hidden'),300);" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
             </div>
-            <p class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Feature Disabled for Testing</p>
-            <button onclick="document.getElementById('actionModalKeeper').classList.add('opacity-0'); setTimeout(()=>document.getElementById('actionModalKeeper').classList.add('hidden'),300);" class="w-full bg-gray-200 text-gray-600 font-black py-4 rounded-xl shadow-sm tracking-wide">CLOSE</button>
+            
+            <div class="flex gap-4 mb-6">
+                <div class="flex-1 bg-gray-50 rounded-2xl p-4 border border-gray-200 flex flex-col items-center justify-center">
+                    <p class="text-[10px] text-gray-400 font-bold tracking-wider mb-1">WALLET</p>
+                    <p class="text-lg font-black text-green-500">₹<span class="global-balance">0.00</span></p>
+                </div>
+                <div class="flex-1 bg-gray-50 rounded-2xl p-4 border border-gray-200 flex flex-col items-center justify-center">
+                    <p class="text-[10px] text-gray-400 font-bold tracking-wider mb-1">VAULT</p>
+                    <p class="text-lg font-black text-orange-500">₹<span class="global-keeper-balance">0.00</span></p>
+                </div>
+            </div>
+
+            <div class="flex bg-gray-100 rounded-xl p-1 gap-1 mb-4 border border-gray-200">
+                <button onclick="switchKeeperTab('keeper-lock')" id="btn-keeper-lock" class="flex-1 py-3 text-xs font-bold text-gray-500 rounded-lg keeper-tab-btn active"><i class="fas fa-lock mr-1"></i> LOCK</button>
+                <button onclick="switchKeeperTab('keeper-with')" id="btn-keeper-with" class="flex-1 py-3 text-xs font-bold text-gray-500 rounded-lg keeper-tab-btn"><i class="fas fa-unlock mr-1"></i> WITHDRAW</button>
+            </div>
+            
+            <div id="keeper-lock" class="keeper-tab-content active">
+                <form onsubmit="event.preventDefault(); processKeeperLock()">
+                    <div class="relative mb-4"><span class="absolute left-4 top-3 text-gray-400 font-black">₹</span><input type="number" id="kl-amt" required placeholder="Amount to Lock" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-4 py-3 focus-accent font-black text-blue-600"></div>
+                    <input type="password" id="kl-pin" required maxlength="4" placeholder="Enter 4-Digit PIN" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center tracking-widest font-black text-lg mb-6 focus-accent text-gray-800">
+                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">LOCK SECURELY</button>
+                </form>
+            </div>
+            <div id="keeper-with" class="keeper-tab-content">
+                <form onsubmit="event.preventDefault(); processKeeperWithdraw()">
+                    <div class="relative mb-4"><span class="absolute left-4 top-3 text-gray-400 font-black">₹</span><input type="number" id="kw-amt" required placeholder="Amount to Withdraw" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-4 py-3 focus-accent font-black text-orange-500"></div>
+                    <input type="password" id="kw-pin" required maxlength="4" placeholder="Enter 4-Digit PIN" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-center tracking-widest font-black text-lg mb-6 focus-accent text-gray-800">
+                    <button type="submit" class="w-full bg-orange-500 text-white font-black py-4 rounded-xl shadow-lg shadow-orange-500/30 btn-animate tracking-wide">WITHDRAW TO WALLET</button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- Action Modal: Custom ID -->
     <div id="customIdModal" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-6">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 transform transition-transform duration-300 scale-95 shadow-2xl border border-gray-100 text-center relative">
             <button onclick="document.getElementById('customIdModal').classList.add('opacity-0'); setTimeout(()=>document.getElementById('customIdModal').classList.add('hidden'),300);" class="absolute right-4 top-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center"><i class="fas fa-times"></i></button>
@@ -697,6 +780,7 @@
         </div>
     </div>
 
+    <!-- Public Lifafa Flow Overlay -->
     <div id="public-lifafa-wrapper" class="fixed inset-0 bg-white z-[100] hidden flex-col items-center justify-center p-6 pb-20 overflow-y-auto bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
         <div class="w-full max-w-sm relative">
             <button onclick="resetPublicLifafa(); window.history.replaceState({}, document.title, '/');" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center shadow-sm z-10"><i class="fas fa-times"></i></button>
@@ -707,6 +791,7 @@
                 </div>
             </div>
 
+            <!-- Step 1: User Verify -->
             <div id="lif-public-step-1" class="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 text-center relative overflow-hidden">
                 <h2 class="text-2xl font-black text-gray-800 mb-2">Claim Lifafa</h2>
                 <p class="text-xs font-bold text-gray-400 mb-8 uppercase tracking-widest">Enter your registered number</p>
@@ -714,6 +799,7 @@
                 <button onclick="verifyLifafaUser()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide">NEXT <i class="fas fa-arrow-right ml-1"></i></button>
             </div>
 
+            <!-- Step 2: Channel Verify -->
             <div id="lif-public-step-2" class="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 text-center hidden">
                 <h2 class="text-2xl font-black text-gray-800 mb-2">Action Required</h2>
                 <p class="text-[10px] font-bold text-red-500 mb-6 uppercase tracking-widest bg-red-50 py-2 rounded-lg border border-red-100">Join all channels to unlock</p>
@@ -721,6 +807,7 @@
                 <button id="btn-lif-verify-channels" onclick="verifyLifafaChannelsJoined()" class="w-full bg-gray-800 text-white font-black py-4 rounded-xl shadow-lg btn-animate tracking-wide flex items-center justify-center gap-2"><i class="fas fa-sync-alt"></i> CHECK MEMBERSHIP</button>
             </div>
 
+            <!-- Step 3: Password / Claim -->
             <div id="lif-public-step-3" class="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 text-center hidden">
                 <h2 class="text-2xl font-black text-gray-800 mb-6">Unlock Lifafa</h2>
                 <div id="public-lif-password-box" class="mb-6">
@@ -730,8 +817,10 @@
                 <button onclick="executePublicLifafaClaim()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-500/30 btn-animate tracking-wide text-lg">OPEN LIFAFA</button>
             </div>
 
+            <!-- Success/Result State -->
             <div id="lif-public-result" class="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 text-center hidden"></div>
 
+            <!-- Refer State -->
             <div id="lif-public-refer-step" class="bg-white rounded-3xl p-6 shadow-2xl border border-gray-100 text-center hidden">
                 <div class="w-16 h-16 bg-blue-100 text-blue-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"><i class="fas fa-share-alt"></i></div>
                 <h2 class="text-xl font-black text-gray-800 mb-2">Already Claimed!</h2>
@@ -745,11 +834,13 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
     <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-2xl z-[100] hidden opacity-0 transition-opacity duration-300 flex items-center gap-3 border border-gray-700">
         <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-xs"><i class="fas fa-info"></i></div>
         <span id="toastMsg" class="font-bold text-sm tracking-wide">Message</span>
     </div>
 
+    <!-- TXN Details Modal -->
     <div id="txnModal" class="fixed inset-0 bg-slate-900/40 z-50 hidden opacity-0 transition-opacity duration-300 flex items-end justify-center pb-0 sm:pb-6">
         <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 transform transition-transform duration-300 translate-y-0 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] max-h-[90vh] overflow-y-auto no-scrollbar border border-gray-100">
             <div class="flex justify-between items-start mb-6">
@@ -789,7 +880,7 @@
                 <div class="flex justify-between items-center pt-1">
                     <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">TXN ID</span>
                     <div class="flex items-center gap-2">
-                        <span id="txnModalId" class="text-[10px] font-mono font-bold text-blue-500 bg-blue-50 px-2 py-1 rounded border border-blue-100">ID</span>
+                        <span id="txnModalId" class="text-[10px] font-mono font-bold text-blue-500 bg-blue-50 border border-blue-100 px-2 py-1 rounded">ID</span>
                         <button onclick="copyTxnId()" class="text-gray-400 hover:text-blue-500"><i class="fas fa-copy"></i></button>
                     </div>
                 </div>
@@ -804,6 +895,7 @@
         </div>
     </div>
 
+    <!-- TXN Result Success/Fail Full Screen Overlay -->
     <div id="txn-result-overlay" class="fixed inset-0 bg-white z-[100] hidden flex-col items-center justify-between py-10 px-6">
         
         <div id="rocket-overlay" class="absolute inset-0 bg-white z-0 hidden flex-col items-center justify-end overflow-hidden">
